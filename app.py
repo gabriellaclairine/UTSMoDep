@@ -46,7 +46,15 @@ def preprocess_input(data_df, ord_enc, onehot_encoder, scaler, feature_list):
 def predict_loan_status(input_data):
     processed = preprocess_input(input_data, ord_enc, onehot_encoder, scaler, feature_list)
     prediction = model.predict(processed)
-    return 'Approved' if prediction[0] == 1 else 'Rejected'
+    
+    st.subheader("Hasil Prediksi")
+    if prediction[0] == 1:
+        st.success("✅ Disetujui")
+        return 'Approved'
+    else:
+        st.error("❌ Ditolak")
+        return 'Rejected'
+
 
 # --- Bagian 3: UI Streamlit ---
 st.set_page_config(page_title="Loan Approval Prediction", layout="centered")
@@ -90,5 +98,3 @@ with st.form("loan_form"):
         }])
 
         result = predict_loan_status(user_input)
-        st.subheader("Hasil Prediksi")
-        st.success("✅ Disetujui") if result == "Approved" else st.error("❌ Ditolak")
